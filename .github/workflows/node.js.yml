@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main, web_worker_compat ]
+    branches: [ publish_fork ]
   pull_request:
-    branches: [ main, web_worker_compat ]
+    branches: [ publish_fork ]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 15.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -27,3 +27,6 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
